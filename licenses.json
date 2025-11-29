@@ -2,21 +2,36 @@
   {
     "key": "SD-TEST-1234-ABCD",
     "customerName": "Demo Customer",
-    "expiresAt": "2030-01-01T00:00:00.000Z"
+    "expiresAt": "2030-01-01T00:00:00.000Z",
+    "maxDevices": 2,
+
   },
   {
     "key": "SD-DB5C-8DEC-C86C",
     "customerName": "Firma Müller GmbH",
-    "expiresAt": "2026-11-29T20:48:32.013Z"
+    "expiresAt": "2026-11-29T20:48:32.013Z",
+    "maxDevices": 2,
+
   },
   {
     "key": "SD-1A25-CF8A-D0A7",
     "customerName": "Testkunde GmbH",
-    "expiresAt": "2026-11-29T21:25:09.314Z"
+    "expiresAt": "2026-11-29T21:25:09.314Z",
+    "maxDevices": 2,
+
   },
   {
     "key": "SD-16D9-5305-1B62",
     "customerName": "server kunde",
-    "expiresAt": "2025-12-06T22:30:27.353Z"
+    "expiresAt": "2025-12-06T22:30:27.353Z",
+    "maxDevices": 2,
+
+  },
+  {
+    "key": "F9FB-287A-D1BA-49AA",
+    "customerName": "zahirorr",
+    "expiresAt": "2025-12-04T23:31:38.161Z",
+    "maxDevices": 2,
+    "devices": []
   }
 ]
