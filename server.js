@@ -20,6 +20,10 @@ function loadLicenses() {
   }
 }
 
+function saveLicenses(licenses) {
+  fs.writeFileSync(LICENSES_FILE, JSON.stringify(licenses, null, 2), "utf8");
+}
+
 // 🔹 Health-Check für Render & zum Testen im Browser
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
@@ -27,16 +31,24 @@ app.get("/health", (req, res) => {
 
 app.post("/api/verify-license", (req, res) => {
   const { key, deviceId } = req.body || {};
+
   if (!key) {
     return res.status(400).json({ valid: false, reason: "NO_KEY" });
+  }
+  if (!deviceId) {
+    // Unser Client sendet immer deviceId – wenn nicht, blocken
+    return res.status(400).json({ valid: false, reason: "NO_DEVICE_ID" });
   }
 
   const licenses = loadLicenses();
   const now = new Date();
   const lic = licenses.find((l) => l.key === key.trim());
 
-  if (!lic) return res.json({ valid: false, reason: "NOT_FOUND" });
+  if (!lic) {
+    return res.json({ valid: false, reason: "NOT_FOUND" });
+  }
 
+  // Ablaufdatum prüfen
   if (lic.expiresAt) {
     const exp = new Date(lic.expiresAt);
     if (isNaN(exp.getTime()) || exp < now) {
@@ -44,15 +56,50 @@ app.post("/api/verify-license", (req, res) => {
     }
   }
 
+  // maxDevices & devices-Feld vorbereiten
+  const maxDevices = typeof lic.maxDevices === "number" && lic.maxDevices > 0
+    ? lic.maxDevices
+    : 1; // Fallback: 1 PC, wenn nichts gesetzt
+
+  if (!Array.isArray(lic.devices)) {
+    lic.devices = [];
+  }
+
+  // Doppelte / leere Einträge filtern
+  lic.devices = lic.devices.filter((d) => typeof d === "string" && d.trim().length > 0);
+
+  const alreadyRegistered = lic.devices.includes(deviceId);
+  const usedDevices = lic.devices.length;
+
+  if (!alreadyRegistered) {
+    if (usedDevices >= maxDevices) {
+      // Zu viele Geräte → blocken
+      return res.json({
+        valid: false,
+        reason: "MAX_DEVICES_REACHED",
+        maxDevices,
+        usedDevices,
+      });
+    }
+
+    // Neues Gerät registrieren
+    lic.devices.push(deviceId);
+    saveLicenses(licenses);
+    console.log(
+      `📌 License ${lic.key}: new device registered (${deviceId}). ` +
+      `Used ${lic.devices.length}/${maxDevices}`
+    );
+  }
+
+  // Alles ok
   return res.json({
     valid: true,
     reason: null,
     customerName: lic.customerName,
     expiresAt: lic.expiresAt || null,
+    maxDevices,
+    usedDevices: lic.devices.length,
   });
-});
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
 });
 
 // 🔹 WICHTIG: Render gibt den Port per ENV-Variable vor
