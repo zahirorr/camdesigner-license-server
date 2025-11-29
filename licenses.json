@@ -13,5 +13,10 @@
     "key": "SD-1A25-CF8A-D0A7",
     "customerName": "Testkunde GmbH",
     "expiresAt": "2026-11-29T21:25:09.314Z"
+  },
+  {
+    "key": "SD-16D9-5305-1B62",
+    "customerName": "server kunde",
+    "expiresAt": "2025-12-06T22:30:27.353Z"
   }
 ]
