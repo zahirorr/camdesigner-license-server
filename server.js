@@ -51,6 +51,9 @@ app.post("/api/verify-license", (req, res) => {
     expiresAt: lic.expiresAt || null,
   });
 });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 // 🔹 WICHTIG: Render gibt den Port per ENV-Variable vor
 const PORT = process.env.PORT || 4000;
