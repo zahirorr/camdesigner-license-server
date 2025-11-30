@@ -33,5 +33,12 @@
     "expiresAt": "2025-12-04T23:31:38.161Z",
     "maxDevices": 2,
     "devices": []
+  },
+  {
+    "key": "7D00-700E-3257-6C39",
+    "customerName": "Amr",
+    "expiresAt": "2025-12-01T13:52:22.494Z",
+    "maxDevices": 1,
+    "devices": []
   }
 ]
