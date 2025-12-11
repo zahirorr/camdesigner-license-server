@@ -110,5 +110,12 @@
     "expiresAt": "2025-12-15T20:44:28.100Z",
     "maxDevices": 1,
     "devices": []
+  },
+  {
+    "key": "06B8-CA15-DD30-9124",
+    "customerName": "Test user",
+    "expiresAt": "2025-12-21T21:36:45.466Z",
+    "maxDevices": 3,
+    "devices": []
   }
 ]
